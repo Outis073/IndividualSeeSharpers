@@ -1,0 +1,37 @@
+﻿@model IndividualSeeSharpers.Models.MailRequest
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SendMail">
+            <h2>Send an email</h2>
+            <hr />
+            <div class="form-floating">
+                <input asp-for="ToEmail" class="form-control"  />
+                <label asp-for="ToEmail"></label>
+ 
+            </div>
+            <div class="form-floating">
+                <input asp-for="Subject" class="form-control"  />
+                <label asp-for="Subject"></label>
+
+            </div>
+            <div class="form-floating">
+                <input asp-for="Body" class="form-control"  />
+                <label asp-for="Body"></label>
+
+            </div>
+            <div class="form-floating">
+                <input asp-for="Attachments" class="form-control"  />
+                <label asp-for="Attachments"></label>
+
+            </div>
+
+            <button id="SendMailSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Send Email</button>
+        </form>
+    </div>
+</div>
