@@ -2,30 +2,35 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using IndividualSeeSharpers.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IndividualSeeSharpers.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IndividualSeeSharpers.Controllers
 {
-    public class MoviesController : Controller
+    public class ReviewController : Controller
     {
         private readonly SeeSharpersContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MoviesController(SeeSharpersContext context)
+        public ReviewController(SeeSharpersContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Movies
+        // GET: Review
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movie.ToListAsync());
+            return View(await _context.Reviews.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Review/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +38,40 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var review = await _context.Reviews
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (review == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(review);
         }
 
-        // GET: Movies/Create
+        // GET: Review/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Review/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Duration,Movie3d,BeginTime,AgeRequirement,Thumbnail,Language,Description,DescriptionEn,Genre,GenreEn")] Movie movie)
+        public async Task<IActionResult> Create(ApplicationUser user, [Bind("Id,User,Message")] Review review)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(review);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
-            return View(movie);
+            return View(review);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Review/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +79,22 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie == null)
+            var review = await _context.Reviews.FindAsync(id);
+            if (review == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(review);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Review/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Duration,Movie3d,BeginTime,AgeRequirement,Thumbnail,Language,Description,DescriptionEn,Genre,GenreEn")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,User,Message")] Review review)
         {
-            if (id != movie.Id)
+            if (id != review.Id)
             {
                 return NotFound();
             }
@@ -97,12 +103,12 @@ namespace IndividualSeeSharpers.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(review);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!ReviewExists(review.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +119,10 @@ namespace IndividualSeeSharpers.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(review);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Review/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +130,30 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var review = await _context.Reviews
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (review == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(review);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Review/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            _context.Movie.Remove(movie);
+            var review = await _context.Reviews.FindAsync(id);
+            _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool ReviewExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Reviews.Any(e => e.Id == id);
         }
     }
 }

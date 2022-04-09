@@ -26,7 +26,13 @@ public class SeeSharpersContext : IdentityDbContext<ApplicationUser>
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
         }
 
-    public DbSet<IndividualSeeSharpers.Models.Movie> Movie { get; set; }
+    public DbSet<Movie> Movie { get; set; }
+
+    public DbSet<Price> Prices { get; set; }
+    public DbSet<Show> Shows{ get; set; }
+    public DbSet<Subscriber> Subscribers { get; set; }
+    public DbSet<Theatre> Theatres { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     }
 

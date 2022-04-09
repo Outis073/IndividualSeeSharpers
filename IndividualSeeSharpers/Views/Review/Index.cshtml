@@ -1,0 +1,41 @@
+﻿@model IEnumerable<IndividualSeeSharpers.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-outline-light mt-3" asp-action="Create">Create New</a>
+</p>
+<table class="table text-white">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User!.FirstName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem =>item.User!.FirstName)
+            </td>
+            <td>
+                <a class="btn btn-outline-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a class="btn btn-outline-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

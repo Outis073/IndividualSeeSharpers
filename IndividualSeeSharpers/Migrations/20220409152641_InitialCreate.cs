@@ -60,8 +60,9 @@ namespace IndividualSeeSharpers.Migrations
                     Duration = table.Column<TimeSpan>(type: "time", nullable: false),
                     Movie3d = table.Column<bool>(type: "bit", nullable: false),
                     BeginTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AgeRequirement = table.Column<short>(type: "smallint", nullable: false),
-                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AgeRequirement = table.Column<short>(type: "smallint", nullable: true),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DescriptionEn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -70,6 +71,48 @@ namespace IndividualSeeSharpers.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movie", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Prices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscribers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscribers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Theatres",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    AmountOfRows = table.Column<int>(type: "int", nullable: false),
+                    AmountOfSeats = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Theatres", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,6 +221,31 @@ namespace IndividualSeeSharpers.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Shows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TheatreId = table.Column<int>(type: "int", nullable: true),
+                    MovieId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shows_Movie_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movie",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Shows_Theatres_TheatreId",
+                        column: x => x.TheatreId,
+                        principalTable: "Theatres",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -216,6 +284,16 @@ namespace IndividualSeeSharpers.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shows_MovieId",
+                table: "Shows",
+                column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shows_TheatreId",
+                table: "Shows",
+                column: "TheatreId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -236,13 +314,25 @@ namespace IndividualSeeSharpers.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Movie");
+                name: "Prices");
+
+            migrationBuilder.DropTable(
+                name: "Shows");
+
+            migrationBuilder.DropTable(
+                name: "Subscribers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Movie");
+
+            migrationBuilder.DropTable(
+                name: "Theatres");
         }
     }
 }

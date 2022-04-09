@@ -35,15 +35,22 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminAccess", policy => policy.RequireRole("Admin"));
 
-    options.AddPolicy("CashierAccess", policy =>
+    options.AddPolicy("BackOfficeAccess", policy =>
         policy.RequireAssertion(context =>
             context.User.IsInRole("Admin")
-            || context.User.IsInRole("Manager")));
+            || context.User.IsInRole("BackOffice")));
+
+    options.AddPolicy("EmployeeAccess", policy =>
+        policy.RequireAssertion(context =>
+            context.User.IsInRole("Admin")
+            || context.User.IsInRole("BackOffice")
+            || context.User.IsInRole("Cashier")));
 
     options.AddPolicy("CustomerAccess", policy =>
         policy.RequireAssertion(context =>
             context.User.IsInRole("Admin")
-            || context.User.IsInRole("Manager")
+            || context.User.IsInRole("BackOffice")
+            || context.User.IsInRole("Cashier")
             || context.User.IsInRole("Customer")));
 });
 

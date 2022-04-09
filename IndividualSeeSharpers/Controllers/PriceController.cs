@@ -10,22 +10,22 @@ using IndividualSeeSharpers.Models;
 
 namespace IndividualSeeSharpers.Controllers
 {
-    public class MoviesController : Controller
+    public class PriceController : Controller
     {
         private readonly SeeSharpersContext _context;
 
-        public MoviesController(SeeSharpersContext context)
+        public PriceController(SeeSharpersContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Price
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movie.ToListAsync());
+            return View(await _context.Prices.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Price/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var price = await _context.Prices
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (price == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(price);
         }
 
-        // GET: Movies/Create
+        // GET: Price/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Price/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Duration,Movie3d,BeginTime,AgeRequirement,Thumbnail,Language,Description,DescriptionEn,Genre,GenreEn")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Name,PriceAmount")] Price price)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(price);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(price);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Price/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie == null)
+            var price = await _context.Prices.FindAsync(id);
+            if (price == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(price);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Price/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Duration,Movie3d,BeginTime,AgeRequirement,Thumbnail,Language,Description,DescriptionEn,Genre,GenreEn")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PriceAmount")] Price price)
         {
-            if (id != movie.Id)
+            if (id != price.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace IndividualSeeSharpers.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(price);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!PriceExists(price.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace IndividualSeeSharpers.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(price);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Price/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var price = await _context.Prices
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (price == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(price);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Price/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            _context.Movie.Remove(movie);
+            var price = await _context.Prices.FindAsync(id);
+            _context.Prices.Remove(price);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool PriceExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Prices.Any(e => e.Id == id);
         }
     }
 }

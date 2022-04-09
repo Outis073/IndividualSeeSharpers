@@ -1,8 +1,45 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<IndividualSeeSharpers.Models.Movie>
+@inject IViewLocalizer localizer
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <img src="Images/Header.png" class="h-50"/>
+    <h1 class="display-5 d-flex justify-content-start mb-4">Nu in de bioscoop</h1>
+
+    <div>
+        <ul class="nav d-flex justify-content-start justify-content-around bem-2">
+            <li><a class="btn btn-primary col-3 m-1" href="@Url.Action("Index", "Home", new {sortOrder = ViewBag.DateSortParm})">@localizer["Date"]</a></li>
+            <li><a class="btn btn-primary col-3 m-1" href="@Url.Action("Index", "Home", new {sortOrder = ViewBag.NameSortParm})">@localizer["Title"]</a></li>
+            <li>
+
+                <div class="m-1">
+                    @using (Html.BeginForm())
+                    {
+                        <p>
+                            @Html.TextBox("SearchString")
+                            <input type="submit" value="@localizer["Search"]"/>
+                        </p>
+                    }
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-3 m-1">
+                    <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" class="w-75 m-1" alt="...">
+                    <p class="mt-3 m-2">@Html.DisplayFor(modelItem => item.Title)</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div>
+    <partial name="_SocialNewsletterPartial"/>
 </div>
