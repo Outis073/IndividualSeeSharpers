@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IndividualSeeSharpers.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 
 namespace IndividualSeeSharpers.Controllers
 {
@@ -27,7 +28,10 @@ namespace IndividualSeeSharpers.Controllers
         // GET: Review
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reviews.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            
+            return View(await _context.Reviews.OrderByDescending(s => s.Id).ToListAsync());
+            
         }
 
         // GET: Review/Details/5
@@ -59,9 +63,10 @@ namespace IndividualSeeSharpers.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApplicationUser user, [Bind("Id,User,Message")] Review review)
+        public async Task<IActionResult> Create([Bind("Id,User,Message")] Review review)
         {
-            if (ModelState.IsValid)
+            review.User = await _userManager.GetUserAsync(User);
+            if (ModelState.IsValid && review.User != null)
             {
                 _context.Add(review);
                 await _context.SaveChangesAsync();
@@ -94,6 +99,7 @@ namespace IndividualSeeSharpers.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,User,Message")] Review review)
         {
+            review.User = await _userManager.GetUserAsync(User);
             if (id != review.Id)
             {
                 return NotFound();

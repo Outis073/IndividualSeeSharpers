@@ -1,10 +1,10 @@
 ﻿namespace IndividualSeeSharpers.Models;
 
-public class Theatre
+public class Row
 {
     public int Id { get; set; }
 
     public int Number { get; set; }
 
-    public ICollection<Row>? AmountOfRows { get; set; }
+    public int AmountOfSeats { get; set; }
 }

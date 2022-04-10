@@ -43,9 +43,29 @@ public static class SeedData
                     DescriptionEn = "As Harry, Ron, and Hermione race against time and evil to destroy the Horcruxes, they uncover the existence of the three most powerful objects in the wizarding world: the Deathly Hallows.",
                     Genre = "Fantasy",
                     GenreEn = "Fantasy"
+                },
+                
+                
+                new Movie
+                {
+                    Title = "The Northman",
+                    Duration = new TimeSpan(2, 20, 0),
+                    Movie3d = false,
+                    AgeRequirement = 12,
+                    Thumbnail = "https://www.vuecinemas.nl/thumb?w=268&f=jpg&src=userfiles/image/movies/2039522_147051.jpg&alt=img/movie_placeholder.png",
+                    Language = "English",
+                    Description = "The Northman, de nieuwe film van de visionaire regisseur Robert Eggers (The Lighthouse, The Witch), is een heroïsch actie-epos over een jonge Vikingprins en zijn missie om de moord op zijn vader te wreken. De sterrencast bestaat onder meer uit Alexander Skarsgård, Nicole Kidman, Claes Bang, Anya Taylor-Joy, Ethan Hawke, Björk en Willem Dafoe.",
+                    DescriptionEn = "The Northman, the new film from visionary director Robert Eggers (The Lighthouse, The Witch), is a heroic action epic about a young Viking prince and his mission to avenge his father's murder. The star cast includes Alexander Skarsgård, Nicole Kidman, Claes Bang, Anya Taylor-Joy, Ethan Hawke, Björk and Willem Dafoe.",
+                    Genre = "Actie/Avontuur",
+                    GenreEn = "Action/Adventure"
                 }
             );
             context.SaveChanges();
+
+
         }
-    }
+
+
 }
+}
+

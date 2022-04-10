@@ -5,7 +5,6 @@ namespace IndividualSeeSharpers.Data;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
-    public int UserId { get; set; }
     public override string? Email { get; set; }
 
     public string? FirstName { get; set; }

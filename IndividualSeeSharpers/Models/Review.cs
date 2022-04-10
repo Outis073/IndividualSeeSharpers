@@ -11,4 +11,5 @@ public class Review
     public ApplicationUser? User { get; set; }
 
     public string? Message { get; set; }
+
 }

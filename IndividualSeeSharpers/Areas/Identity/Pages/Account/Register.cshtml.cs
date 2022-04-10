@@ -138,7 +138,7 @@ namespace IndividualSeeSharpers.Areas.Identity.Pages.Account
                     var defaultrole = _roleManager.FindByNameAsync("Customer").Result;
                     if (defaultrole != null)
                     {
-                         await _userManager.AddToRoleAsync(user, defaultrole.Name);
+                         await _userManager.AddToRoleAsync(user, defaultrole.Id);
                     }
 
                     _logger.LogInformation("User created a new account with password.");

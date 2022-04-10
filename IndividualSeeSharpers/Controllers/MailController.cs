@@ -1,33 +1,48 @@
 ﻿using IndividualSeeSharpers.Models;
 using IndividualSeeSharpers.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IndividualSeeSharpers.Controllers
 {
     public class MailController : Controller
     {
-        private readonly IMailService mailService;
-        public MailController(IMailService mailService)
+        private readonly IMailService _mailService;
+        private readonly SeeSharpersContext _context;
+
+        public MailController(IMailService mailService, SeeSharpersContext context)
         {
-            this.mailService = mailService;
+            _mailService = mailService;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Subscribers"] = new SelectList(_context.Subscribers, "Email", "Email");
             return View();
         }
+
+        
+
         [HttpPost("send")]
-        public async Task<IActionResult> SendMail([Bind("ToEmail, Subject, Body, Attachments")] MailRequest request)
+        public async Task<IActionResult> MailNewsletter(MailRequest request)
         {
-            try
+
+            var mailingList = from m in _context.Subscribers
+                select m;
+            foreach (var member in mailingList)
             {
-                await mailService.SendEmailAsync(request);
-                return Ok();
+                MailRequest mailRequest = new()
+                {
+                    ToEmail = member.Email,
+                    Subject = request.Subject,
+                    Body = request.Body,
+                    Attachments = request.Attachments
+                };
+                await _mailService.SendEmailAsync(mailRequest);
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+
+            return Ok();
 
         }
     }

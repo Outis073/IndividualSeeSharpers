@@ -1,0 +1,25 @@
+﻿<container class="container align-content-center">
+   
+    
+    <div class="row">
+         
+        <div class="col-lg-8 text-center mx-auto align-self-center mt-3 mb-3">
+            <h4 class="m-4 text-danger"> Dit emailadres is al aangemeld voor de nieuwsbrief.</h4>
+            <div class="form-container">
+
+                <div class="h2 mobile-adjust color-white m-3">Wees welkom bij de SeeSharper-familie</div>
+                <p>Schrijf je in voor onze nieuwsbrief.</p>
+
+                @using (Html.BeginForm("Subscribe", "Subscribe", FormMethod.Post))
+                {
+
+                    <p>
+                        @Html.TextBox("Email")
+                        <input class="btn btn-outline-primary" type="submit" value="Verzenden"/>
+                    </p>
+                }
+
+            </div>
+        </div>
+    </div>
+</container>
