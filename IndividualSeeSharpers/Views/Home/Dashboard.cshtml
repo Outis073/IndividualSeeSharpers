@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using IndividualSeeSharpers.Data
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject UserManager<ApplicationUser> UserManager
+@inject IViewLocalizer localizer
 
 
-<h3 class="mb-5"> Welcome at the dashboard @UserManager.GetUserName(User) </h3>
+<h3 class="mb-5"> @localizer["Welcome"] @UserManager.GetUserName(User) </h3>
 
 <section class="row">
     <div class="col-sm-12">
@@ -11,18 +13,18 @@
             
             <ul class="navbar-nav col-lg-3 ">
 
-                <p> What would you like to do?</p>
+                <p>@localizer["To do"]</p>
                 <li>
-                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Movies" asp-action="Index">Manage Movies</a>
+                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Movies" asp-action="Index">@localizer["Movies"]</a>
                 </li>
                 <li>
-                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Mail" asp-action="Index">Send Newsletter</a>
+                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Mail" asp-action="Index">@localizer["Newsletter"]</a>
                 </li>
                 <li>
-                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Show" asp-action="Index">Manage Shows</a>
+                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Show" asp-action="Index">@localizer["Shows"]</a>
                 </li>
                 <li>
-                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Price" asp-action="Index">Manage Prices</a>
+                    <a class="nav-link border-bottom m-2" asp-area="" asp-controller="Price" asp-action="Index">@localizer["Prices"]</a>
                 </li>
             </ul>
             <div class="col-lg-3">

@@ -1,10 +1,11 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
 <div class="border-top mt-5">
 
 
     <div class="col-lg-6 text-center mx-auto align-self-center mt-3 mb-3">
         
-        <div class="h3 mb-3">Volg ons ook via</div>
+        <div class="h3 mb-3">@localizer["Follow"]</div>
         <a class="btn text-primary" title="Facebook" href="https://www.facebook.com/" target="_blank">
             <span class="fa fa-2x fa-facebook"></span>
             <span >Facebook</span>
@@ -28,14 +29,14 @@
 
             <div class="form-container">
 
-                <div class="h2 mobile-adjust color-white">Wees welkom bij de SeeSharper-familie</div>
-                <p>Schrijf je in voor onze nieuwsbrief.</p>
+                <div class="h2 mobile-adjust color-white">@localizer["Family"]</div>
+                <p>@localizer["Newsletter"]</p>
 
                     @using (Html.BeginForm("Subscribe", "Subscribe", FormMethod.Post))
                     {
                         <p>
                             @Html.TextBox("Email")
-                            <input class="btn btn-outline-primary" type="submit" value="Verzenden"/>
+                            <input class="btn btn-outline-primary" type="submit" value="@localizer["Subscribe"]"/>
                         </p>
                     }
                
