@@ -36,5 +36,6 @@ namespace TestIndividual
             Assert.Equal("Jan", user.FirstName);
             Assert.Equal("Jansen", user.LastName);
         }
+
     }
 }
