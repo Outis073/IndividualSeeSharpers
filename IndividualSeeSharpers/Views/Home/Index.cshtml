@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@model IEnumerable<IndividualSeeSharpers.Models.Movie>
+@model IndividualSeeSharpers.ViewModels.HomeIndexViewModel
 @inject IViewLocalizer localizer
 
 @{
@@ -10,33 +10,69 @@
     <img src="Images/Header.png" class="h-50"/>
     <h1 class="display-5 d-flex justify-content-start mb-4">Nu in de bioscoop</h1>
 
-    <div>
-        <ul class="nav d-flex justify-content-start justify-content-around bem-2">
-            <li><a class="btn btn-primary col-3 m-1" href="@Url.Action("Index", "Home", new {sortOrder = ViewBag.DateSortParm})">@localizer["Date"]</a></li>
-            <li><a class="btn btn-primary col-3 m-1" href="@Url.Action("Index", "Home", new {sortOrder = ViewBag.NameSortParm})">@localizer["Title"]</a></li>
-            <li>
+<ul class="nav nav-pills mb-5" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-film-tab" data-bs-toggle="pill" data-bs-target="#pills-film" type="button" role="tab" aria-controls="pills-film" aria-selected="true">Alle films</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-dag-tab" data-bs-toggle="pill" data-bs-target="#pills-dag" type="button" role="tab" aria-controls="pills-dag" aria-selected="false">Alleen Vandaag</button>
+        </li>
 
-                <div class="m-1">
-                    @using (Html.BeginForm())
-                    {
-                        <p>
-                            @Html.TextBox("SearchString")
-                            <input type="submit" value="@localizer["Search"]"/>
-                        </p>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-film" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="container">
+                <div class="row">
+                    @{
+                        Model.Movies.Sort((x, y) => string.Compare(x.Title, y.Title));
+                   
+                        @foreach (var item in Model.Movies)
+                        {
+                            <div class="col-lg-3 mb-3">
+
+                                <a asp-controller="Home" asp-action="ShowSelection" asp-route-id="@item.Id" ><img src="@Html.DisplayFor(modelItem => item.Thumbnail)" class="btn" style="max-height: 300px;"></a>
+
+                                <p class="mt-3 m-2" >@Html.DisplayFor(modelItem => item.Title)</p>
+                            </div>
+                        }
+
                     }
                 </div>
-            </li>
-        </ul>
-    </div>
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-3 m-1">
-                    <img src="@Html.DisplayFor(modelItem => item.Thumbnail)" class="w-75 m-1" alt="...">
-                    <p class="mt-3 m-2">@Html.DisplayFor(modelItem => item.Title)</p>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-dag" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="container">
+                <div class="row">
+                    @{
+                        Model.Shows.Sort((x, y) => DateTime.Compare(x.StartDateTime, y.StartDateTime));
+
+                        @foreach (var item in Model.Shows)
+                        {
+
+                            <div class="col-lg-3">
+                                @{
+
+                                    @if (item.StartDateTime.Date == DateTime.Today)
+                                    {
+                                        
+                                        <div >
+                                            <img src="@Html.DisplayFor(modelItem => item.Movie.Thumbnail)" style="max-height: 300px;" >
+                                            <div style="min-height: 60px;">
+                                                <p class="mt-3 m-2">@Html.DisplayFor(modelItem => item.Movie.Title)</p>
+                                            </div>
+                                            <p>Speelt om: @Html.DisplayFor(modelItem => item.StartDateTime.TimeOfDay)</p>
+                                            <a class="btn btn-outline-light m-4" asp-controller="Home" asp-action="Contact" asp-route-id="@item.Id">Bestel Tickets</a>
+                                        </div>
+
+                                        
+                                    }
+                                }
+                            </div>
+                        }
+
+                    }
                 </div>
-            }
+            </div>
         </div>
     </div>
 </div>

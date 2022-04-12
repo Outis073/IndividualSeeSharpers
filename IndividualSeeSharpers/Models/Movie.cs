@@ -23,5 +23,5 @@ public class Movie
     public String? DescriptionEn { get; set; } 
     public String? Genre { get; set; }
     public String? GenreEn { get; set; }
-    public ICollection<Show>? Viewings { get; set; }
+    public ICollection<Show>? Shows { get; set; }
 }

@@ -33,6 +33,10 @@ public class SeeSharpersContext : IdentityDbContext<ApplicationUser>
     public DbSet<Subscriber> Subscribers { get; set; }
     public DbSet<Theatre> Theatres { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<Special> Specials { get; set; }
+    public DbSet<ShowSeat> ShowSeats{ get; set; }
 
     }
 

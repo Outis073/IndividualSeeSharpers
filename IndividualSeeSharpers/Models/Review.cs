@@ -7,7 +7,6 @@ public class Review
 {
     public int Id { get; set; }
 
-    [HiddenInput]
     public ApplicationUser? User { get; set; }
 
     public string? Message { get; set; }

@@ -9,4 +9,6 @@ public class Show
     public Theatre? Theatre { get; set; }
 
     public Movie? Movie { get; set; }
+
+    public ICollection<ShowSeat>? ShowSeats { get; set; }
 }

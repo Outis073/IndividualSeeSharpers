@@ -2,45 +2,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using IndividualSeeSharpers.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IndividualSeeSharpers.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 
 namespace IndividualSeeSharpers.Controllers
 {
-    public class ReviewController : Controller
+    public class ShowController : Controller
     {
         private readonly SeeSharpersContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReviewController(SeeSharpersContext context, UserManager<ApplicationUser> userManager)
+        public ShowController(SeeSharpersContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
-        // GET: Review
+        // GET: Show
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var Reviews = await _context.Reviews.OrderByDescending(s => s.Id)
-                .Include(r => r.User.FirstName)
-                .Include(r => r.User.LastName)
-                .ToListAsync();
-                
-
-
-            return View(await _context.Reviews.OrderByDescending(s => s.Id).ToListAsync());
-            
+            var movie = await _context.Movie.ToListAsync();
+            var theatre = await _context.Theatres.ToListAsync();
+            return View(await _context.Shows.ToListAsync());
         }
 
-        // GET: Review/Details/5
+        // GET: Show/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,41 +35,39 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews
+            var show = await _context.Shows
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
+            if (show == null)
             {
                 return NotFound();
             }
 
-            return View(review);
+            return View(show);
         }
 
-        // GET: Review/Create
+        // GET: Show/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Review/Create
+        // POST: Show/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,User,Message")] Review review)
+        public async Task<IActionResult> Create([Bind("Id,StartDateTime")] Show show)
         {
-            review.User = await _userManager.GetUserAsync(User);
-            if (ModelState.IsValid && review.User != null)
+            if (ModelState.IsValid)
             {
-                _context.Add(review);
+                _context.Add(show);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
             }
-            return View(review);
+            return View(show);
         }
 
-        // GET: Review/Edit/5
+        // GET: Show/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,23 +75,22 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
+            var show = await _context.Shows.FindAsync(id);
+            if (show == null)
             {
                 return NotFound();
             }
-            return View(review);
+            return View(show);
         }
 
-        // POST: Review/Edit/5
+        // POST: Show/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,User,Message")] Review review)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDateTime")] Show show)
         {
-            review.User = await _userManager.GetUserAsync(User);
-            if (id != review.Id)
+            if (id != show.Id)
             {
                 return NotFound();
             }
@@ -115,12 +99,12 @@ namespace IndividualSeeSharpers.Controllers
             {
                 try
                 {
-                    _context.Update(review);
+                    _context.Update(show);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReviewExists(review.Id))
+                    if (!ShowExists(show.Id))
                     {
                         return NotFound();
                     }
@@ -131,10 +115,10 @@ namespace IndividualSeeSharpers.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(review);
+            return View(show);
         }
 
-        // GET: Review/Delete/5
+        // GET: Show/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,30 +126,30 @@ namespace IndividualSeeSharpers.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews
+            var show = await _context.Shows
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
+            if (show == null)
             {
                 return NotFound();
             }
 
-            return View(review);
+            return View(show);
         }
 
-        // POST: Review/Delete/5
+        // POST: Show/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            _context.Reviews.Remove(review);
+            var show = await _context.Shows.FindAsync(id);
+            _context.Shows.Remove(show);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ReviewExists(int id)
+        private bool ShowExists(int id)
         {
-            return _context.Reviews.Any(e => e.Id == id);
+            return _context.Shows.Any(e => e.Id == id);
         }
     }
 }

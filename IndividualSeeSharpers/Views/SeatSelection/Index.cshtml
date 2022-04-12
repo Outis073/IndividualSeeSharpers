@@ -1,0 +1,36 @@
+﻿@model IndividualSeeSharpers.Models.Show
+
+@{
+    ViewData["Title"] = "Selecteer een plaats";
+}
+
+<div class="container">
+    <div class="w-100 h-50 overflow-auto justify-content-center">
+        <div class="border-bottom border-5"></div>
+        <p class="text-center">Het Bioscoopscherm</p>
+        @foreach (var row in ViewBag.Rows)
+        {
+            <div class="d-flex justify-content-center">
+                @foreach (var seat in row)
+                {
+                    @if (seat.Occupied)
+                    {
+                        <div class="m-1 d-flex border border-4 border-top-0 rounded-bottom border-danger align-items-center justify-content-center flex-shrink-0" style="height: 3rem; width: 2rem">
+                            <p class="m-0">@seat.Number</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="m-1 d-flex border border-4 border-top-0 rounded-bottom border-info align-items-center justify-content-center flex-shrink-0 bg-gradient" style="height: 3rem; width: 2rem">
+                            <p class="m-0">
+                                @Html.ActionLink($"{seat.Number}", "SaveCustom", "SeatSelection", new {seatPosition = $"{(int) seat.Position.X}_{(int) seat.Position.Y};", id = Model.Id})
+                            </p>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    <a asp-controller="SeatSelection" asp-action="save" asp-route-viewingId="@Model.Id" class="btn btn-info">Stoel automatisch toewijzen</a>
+</div>

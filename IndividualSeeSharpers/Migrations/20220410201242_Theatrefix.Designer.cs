@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IndividualSeeSharpers.Migrations
 {
     [DbContext(typeof(SeeSharpersContext))]
-    partial class SeeSharpersContextModelSnapshot : ModelSnapshot
+    [Migration("20220410201242_Theatrefix")]
+    partial class Theatrefix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,34 +140,6 @@ namespace IndividualSeeSharpers.Migrations
                     b.ToTable("Movie");
                 });
 
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPrinted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Secret")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("IndividualSeeSharpers.Models.Price", b =>
                 {
                     b.Property<int>("Id")
@@ -206,6 +180,30 @@ namespace IndividualSeeSharpers.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("IndividualSeeSharpers.Models.Row", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AmountOfSeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TheatreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TheatreId");
+
+                    b.ToTable("Row");
+                });
+
             modelBuilder.Entity("IndividualSeeSharpers.Models.Show", b =>
                 {
                     b.Property<int>("Id")
@@ -230,66 +228,6 @@ namespace IndividualSeeSharpers.Migrations
                     b.HasIndex("TheatreId");
 
                     b.ToTable("Shows");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.ShowSeat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("ShowId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("X")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShowId");
-
-                    b.ToTable("ShowSeats");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Special", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("BeginDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescriptionEn")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TicketId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("Specials");
                 });
 
             modelBuilder.Entity("IndividualSeeSharpers.Models.Subscriber", b =>
@@ -317,47 +255,12 @@ namespace IndividualSeeSharpers.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AmountOfRows")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AmountOfSeats")
-                        .HasColumnType("int");
-
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Theatres");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Code")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PriceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Seat")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("PriceId");
-
-                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -506,50 +409,26 @@ namespace IndividualSeeSharpers.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("IndividualSeeSharpers.Models.Row", b =>
+                {
+                    b.HasOne("IndividualSeeSharpers.Models.Theatre", null)
+                        .WithMany("AmountOfRows")
+                        .HasForeignKey("TheatreId");
+                });
+
             modelBuilder.Entity("IndividualSeeSharpers.Models.Show", b =>
                 {
                     b.HasOne("IndividualSeeSharpers.Models.Movie", "Movie")
-                        .WithMany("Shows")
+                        .WithMany("Viewings")
                         .HasForeignKey("MovieId");
 
                     b.HasOne("IndividualSeeSharpers.Models.Theatre", "Theatre")
-                        .WithMany("Shows")
+                        .WithMany()
                         .HasForeignKey("TheatreId");
 
                     b.Navigation("Movie");
 
                     b.Navigation("Theatre");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.ShowSeat", b =>
-                {
-                    b.HasOne("IndividualSeeSharpers.Models.Show", "Show")
-                        .WithMany("ShowSeats")
-                        .HasForeignKey("ShowId");
-
-                    b.Navigation("Show");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Special", b =>
-                {
-                    b.HasOne("IndividualSeeSharpers.Models.Ticket", null)
-                        .WithMany("Specials")
-                        .HasForeignKey("TicketId");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Ticket", b =>
-                {
-                    b.HasOne("IndividualSeeSharpers.Models.Order", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IndividualSeeSharpers.Models.Price", "Price")
-                        .WithMany()
-                        .HasForeignKey("PriceId");
-
-                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -605,27 +484,12 @@ namespace IndividualSeeSharpers.Migrations
 
             modelBuilder.Entity("IndividualSeeSharpers.Models.Movie", b =>
                 {
-                    b.Navigation("Shows");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Order", b =>
-                {
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Show", b =>
-                {
-                    b.Navigation("ShowSeats");
+                    b.Navigation("Viewings");
                 });
 
             modelBuilder.Entity("IndividualSeeSharpers.Models.Theatre", b =>
                 {
-                    b.Navigation("Shows");
-                });
-
-            modelBuilder.Entity("IndividualSeeSharpers.Models.Ticket", b =>
-                {
-                    b.Navigation("Specials");
+                    b.Navigation("AmountOfRows");
                 });
 #pragma warning restore 612, 618
         }

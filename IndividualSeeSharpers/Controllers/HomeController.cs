@@ -1,8 +1,11 @@
 ﻿using IndividualSeeSharpers.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Dynamic;
+using IndividualSeeSharpers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace IndividualSeeSharpers.Controllers
@@ -18,34 +21,20 @@ namespace IndividualSeeSharpers.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index()
         {
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            var movies = from m in _context.Movie
-                select m;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                movies = movies.Where(m => m.Title.Contains(searchString) || m.Description.Contains(searchString));
-            }
+            
+            var movie = new List<Movie>(await _context.Movie.ToListAsync());
+            var show = new List<Show>(await _context.Shows.Where(s => s.StartDateTime > DateTime.Now).ToListAsync());
+            
 
-            switch (sortOrder)
+            var movieShowViewModel = new HomeIndexViewModel()
             {
-                case "title_desc":
-                    movies = movies.OrderByDescending(m => m.Title);
-                    break;
-                case "Date":
-                    movies = movies.OrderBy(m => m.BeginTime);
-                    break;
-                case "date_desc":
-                    movies = movies.OrderByDescending(m => m.BeginTime);
-                    break;
-                default:
-                    movies = movies.OrderBy(s => s.Title);
-                    break;
-            }
+                Movies = movie,
+                Shows = show
+            };
 
-            return View(await movies.ToListAsync());
+            return View(movieShowViewModel);
         }
 
         [HttpPost]
@@ -78,6 +67,35 @@ namespace IndividualSeeSharpers.Controllers
         public IActionResult Contact()
         {
             return View();
+        }
+
+
+        public async Task<IActionResult> ShowSelection(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            /*var movies = movie;*/
+            var show = new List<Show>(await _context.Shows.Where(s => s.StartDateTime > DateTime.Now).ToListAsync());
+
+
+            var movieShowViewModel = new ShowSelectionViewModel()
+            {
+                Movie = movie,
+                Shows = show
+            };
+
+            return View(movieShowViewModel);
         }
 
     }

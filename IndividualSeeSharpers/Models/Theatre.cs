@@ -6,5 +6,10 @@ public class Theatre
 
     public int Number { get; set; }
 
-    public ICollection<Row>? AmountOfRows { get; set; }
+    public int AmountOfRows { get; set; }
+
+    public int AmountOfSeats { get; set; }
+
+    public ICollection<Show> Shows { get; set; }
+
 }

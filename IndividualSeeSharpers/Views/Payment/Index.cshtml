@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<aside class="col-sm-6">
+
+    <article class="card">
+    <div class="card-body p-5 text-black">
+
+        <div class="tab-content">
+        <div class="tab-pane fade show active" id="nav-tab-card">
+            <form role="form">
+                <div class="form-group">
+                    <label for="username">Full name (on the card)</label>
+                    <input type="text" class="form-control" name="username" placeholder="" required="">
+                </div> <!-- form-group.// -->
+
+                <div class="form-group">
+                    <label for="cardNumber">Card number</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="cardNumber" placeholder="">
+                        <div class="input-group-append">
+                            <span class="input-group-text text-muted">
+                                <i class="fab fa-cc-visa">*</i>   <i class="fab fa-cc-amex">*</i>   
+                                <i class="fab fa-cc-mastercard">*</i> 
+                            </span>
+                        </div>
+                    </div>
+                </div> <!-- form-group.// -->
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label><span class="hidden-xs">Expiration</span> </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" placeholder="MM" name="">
+                                <input type="number" class="form-control" placeholder="YY" name="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card">CVV <i class="fa fa-question-circle"></i></label>
+                            <input type="number" class="form-control" required="">
+                        </div> <!-- form-group.// -->
+                    </div>
+                </div> <!-- row.// -->
+                <a asp-controller="Payment" asp-action="Paid" class="subscribe btn btn-primary btn-block m-3" >Betalen</a>
+            </form>
+        </div> <!-- tab-pane.// -->
+    </div>
+    </div>
+</article>
+</aside>
