@@ -1,6 +1,7 @@
 ﻿using IndividualSeeSharpers.Controllers;
 using IndividualSeeSharpers.Models;
 using IndividualSeeSharpers.Services;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -9,8 +10,8 @@ namespace TestIndividual;
 public class MailTest 
 {
 
-        private Mock<IMailService> _mockMailService = new Mock<IMailService>();
-        private Mock<SeeSharpersContext> _mockContext = new Mock<SeeSharpersContext>();
+        private readonly Mock<IMailService> _mockMailService = new Mock<IMailService>();
+        private readonly Mock<SeeSharpersContext> _mockContext = new Mock<SeeSharpersContext>();
 
         [Fact]
         public void TestMethod1()

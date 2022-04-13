@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IndividualSeeSharpers.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IndividualSeeSharpers.Controllers
 {
+    [Authorize("BackOfficeAccess")]
     public class MoviesController : Controller
     {
         private readonly SeeSharpersContext _context;

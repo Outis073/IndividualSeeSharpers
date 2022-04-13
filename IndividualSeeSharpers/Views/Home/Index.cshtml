@@ -61,7 +61,7 @@
                                                 <p class="mt-3 m-2">@Html.DisplayFor(modelItem => item.Movie.Title)</p>
                                             </div>
                                             <p>@localizer["Is about"] @Html.DisplayFor(modelItem => item.StartDateTime.TimeOfDay)</p>
-                                            <a class="btn btn-outline-light m-4" asp-controller="Home" asp-action="Contact" asp-route-id="@item.Id">@localizer["Order tickets"]</a>
+                                            <a class="btn btn-outline-light m-4" asp-controller="SeatSelection" asp-action="Index" asp-route-id="@item.Id">@localizer["Order tickets"]</a>
                                         </div>
 
                                         

@@ -29,8 +29,12 @@ namespace IndividualSeeSharpers.Controllers
                 return Task.FromResult<IActionResult>(View());
             }
 
-            if (show == null)
+            if (show == null) 
+            {
+
                 return Task.FromResult<IActionResult>(View());
+
+            }
 
             SeatService seatService = new(show, _context);
             ViewBag.Rows = seatService.GetSeatsOrderedByNumber();
@@ -47,17 +51,17 @@ namespace IndividualSeeSharpers.Controllers
             }
             catch (Exception e)
             {
-                return Redirect("/Home");
+                return Redirect("/Home/contact");
             }
 
             if (show == null)
                 return Redirect("/Home");
 
-            SeatService _seatService = new(show, _context);
-            var selectedSeats = _seatService.OccupyNextSeat(1);
+            SeatService seatService = new(show, _context);
+            var selectedSeats = seatService.OccupyNextSeat(1);
 
             return RedirectToAction("Index", "Order",
-                new { reservedSeats = SeatPositionHelper.SerializeSeatToString(selectedSeats), viewingId = show.Id });
+                new { reservedSeats = SeatPositionHelper.SerializeSeatToString(selectedSeats), Id = show.Id });
         }
 
         public IActionResult SaveCustom(string seatPosition, int id)
